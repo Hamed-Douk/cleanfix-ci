@@ -3,6 +3,7 @@ import Header from '../components/Header'
 
 function Reservation() {
   const navigate = useNavigate()
+  fetch('https://cleanfix-backend.onrender.com/api/prestations')
 
   const prestations = [
     { emoji: '🚿', titre: 'Lavage extérieur', prix: '3 000 FCFA' },

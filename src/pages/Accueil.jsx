@@ -9,7 +9,7 @@ function Accueil() {
   const [prestations, setPrestations] = useState([])
 
   useEffect(() => {
-    fetch('http://localhost:3001/api/prestations')
+   fetch('https://cleanfix-backend.onrender.com/api/prestations')
       .then(res => res.json())
       .then(data => setPrestations(data))
       .catch(err => console.log('Erreur:', err))
