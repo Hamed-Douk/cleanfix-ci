@@ -7,6 +7,7 @@ import CartePrestation from '../components/CartePrestation'
 function Accueil() {
   const navigate = useNavigate()
   const [prestations, setPrestations] = useState([])
+  const utilisateur = JSON.parse(localStorage.getItem('utilisateur') || '{"nom":""}')
 
   useEffect(() => {
    fetch('https://cleanfix-backend.onrender.com/api/prestations')

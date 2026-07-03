@@ -1,7 +1,9 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import Accueil from './pages/Accueil'
 import Reservation from './pages/Reservation'
 import Suivi from './pages/Suivi'
+import Inscription from './pages/Inscription'
+import Connexion from './pages/Connexion'
 
 function PageSimple({ titre }) {
   return (
@@ -16,15 +18,32 @@ function PageSimple({ titre }) {
   )
 }
 
+function RoutePriotegee({ children }) {
+  const token = localStorage.getItem('token')
+  return token ? children : <Navigate to="/connexion" />
+}
+
 function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Accueil />} />
-        <Route path="/reservation" element={<Reservation />} />
-        <Route path="/suivi" element={<Suivi />} />
-        <Route path="/abonnement" element={<PageSimple titre="Abonnements" />} />
-        <Route path="/profil" element={<PageSimple titre="Mon Profil" />} />
+        <Route path="/connexion" element={<Connexion />} />
+        <Route path="/inscription" element={<Inscription />} />
+        <Route path="/" element={
+          <RoutePriotegee><Accueil /></RoutePriotegee>
+        } />
+        <Route path="/reservation" element={
+          <RoutePriotegee><Reservation /></RoutePriotegee>
+        } />
+        <Route path="/suivi" element={
+          <RoutePriotegee><Suivi /></RoutePriotegee>
+        } />
+        <Route path="/abonnement" element={
+          <RoutePriotegee><PageSimple titre="Abonnements" /></RoutePriotegee>
+        } />
+        <Route path="/profil" element={
+          <RoutePriotegee><PageSimple titre="Mon Profil" /></RoutePriotegee>
+        } />
       </Routes>
     </BrowserRouter>
   )
