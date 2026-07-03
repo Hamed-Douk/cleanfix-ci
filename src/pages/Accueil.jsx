@@ -28,7 +28,7 @@ function Accueil() {
 
       <div style={{ padding: '20px' }}>
         <h2 style={{ color: '#1B4F8A', margin: '0 0 5px 0' }}>
-          Bonjour Khalil 👋
+          Bonjour {utilisateur.nom} 👋
         </h2>
         <p style={{ color: '#666', margin: '0 0 20px 0' }}>
           Quel service souhaitez-vous aujourd'hui ?
