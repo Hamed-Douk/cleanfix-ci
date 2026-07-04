@@ -5,14 +5,18 @@ function Header() {
       padding: '15px 20px',
       display: 'flex',
       alignItems: 'center',
-      justifyContent: 'center'
+      justifyContent: 'center',
+      gap: '12px'
     }}>
       <img
         src="/logo.png"
         alt="AutoDat"
         style={{
-          height: '60px',
-          objectFit: 'contain'
+          height: '55px',
+          objectFit: 'contain',
+          backgroundColor: 'white',
+          borderRadius: '10px',
+          padding: '5px'
         }}
       />
     </div>
