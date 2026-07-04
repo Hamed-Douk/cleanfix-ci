@@ -47,7 +47,7 @@ function Inscription() {
         backgroundColor: '#1B4F8A', padding: '20px',
         paddingTop: '50px', textAlign: 'center'
       }}>
-        <h1 style={{ color: 'white', margin: 0, fontSize: '22px' }}>CleanFix CI</h1>
+<h1 style={{ color: 'white', margin: 0, fontSize: '22px' }}>🚗 AutoDat</h1>
         <p style={{ color: '#B3D1F0', margin: '5px 0 0', fontSize: '14px' }}>
           Créez votre compte
         </p>
