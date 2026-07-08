@@ -4,6 +4,7 @@ import Reservation from './pages/Reservation'
 import Suivi from './pages/Suivi'
 import Inscription from './pages/Inscription'
 import Connexion from './pages/Connexion'
+import Admin from './pages/Admin'
 
 function PageSimple({ titre }) {
   return (
@@ -29,6 +30,7 @@ function App() {
       <Routes>
         <Route path="/connexion" element={<Connexion />} />
         <Route path="/inscription" element={<Inscription />} />
+        <Route path="/admin" element={<Admin />} />
         <Route path="/" element={
           <RoutePriotegee><Accueil /></RoutePriotegee>
         } />
