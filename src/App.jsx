@@ -4,8 +4,8 @@ import Reservation from './pages/Reservation'
 import Suivi from './pages/Suivi'
 import Inscription from './pages/Inscription'
 import Connexion from './pages/Connexion'
-import Profil from './pages/Profil'
 import Admin from './pages/Admin'
+import Profil from './pages/Profil'
 
 
 function PageSimple({ titre }) {
