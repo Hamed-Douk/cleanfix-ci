@@ -9,18 +9,18 @@ function Profil() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    if (utilisateur.id) {
-      fetch(`https://cleanfix-backend.onrender.com/api/reservations/user/${utilisateur.id}`)
-        .then(res => res.json())
-        .then(data => {
-          setReservations(data)
-          setLoading(false)
-        })
-        .catch(() => setLoading(false))
-    } else {
+  if (!utilisateur.id) return
+
+  fetch(`https://cleanfix-backend.onrender.com/api/reservations/user/${utilisateur.id}`)
+    .then(res => res.json())
+    .then(data => {
+      setReservations(data)
       setLoading(false)
-    }
-  }, [])
+    })
+    .catch(() => {
+      setLoading(false)
+    })
+}, [utilisateur.id])
 
   const seDeconnecter = () => {
     localStorage.removeItem('token')

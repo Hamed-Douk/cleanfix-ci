@@ -1,26 +1,25 @@
-import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import Header from '../components/Header'
+import { View, Text, StyleSheet, ScrollView, TextInput, TouchableOpacity, Alert } from 'react-native';
+import { useState } from 'react';
+import { router } from 'expo-router';
 
-function Reservation() {
-  const navigate = useNavigate()
-  const [selectedIndex, setSelectedIndex] = useState(0)
-  const [adresse, setAdresse] = useState('')
-  const [loading, setLoading] = useState(false)
+export default function ReservationScreen() {
+  const [selectedIndex, setSelectedIndex] = useState(0);
+  const [adresse, setAdresse] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const prestations = [
-    { emoji: '🚿', titre: 'Lavage extérieur', prix: '3 000 FCFA' },
-    { emoji: '🪑', titre: 'Sièges & Intérieur', prix: '6 000 FCFA' },
+    { emoji: '🚿', titre: 'Lavage exterieur', prix: '3 000 FCFA' },
+    { emoji: '🪑', titre: 'Sieges & Interieur', prix: '6 000 FCFA' },
     { emoji: '✨', titre: 'Polissage', prix: '20 000 FCFA' },
-    { emoji: '🌿', titre: 'Éco sans eau', prix: '4 000 FCFA' },
-  ]
+    { emoji: '🌿', titre: 'Eco sans eau', prix: '4 000 FCFA' },
+  ];
 
-  const confirmer = async () => {
+  const confirmerReservation = async () => {
     if (!adresse) {
-      alert('Veuillez entrer une adresse')
-      return
+      Alert.alert('Erreur', 'Veuillez entrer une adresse');
+      return;
     }
-    setLoading(true)
+    setLoading(true);
     try {
       const response = await fetch('https://cleanfix-backend.onrender.com/api/reservations', {
         method: 'POST',
@@ -28,84 +27,87 @@ function Reservation() {
         body: JSON.stringify({
           prestation: prestations[selectedIndex].titre,
           adresse,
-          date: "Aujourd'hui"
+          date: "Aujourd'hui",
+          utilisateur_id: JSON.parse(localStorage.getItem('utilisateur') || '{}').id
         })
-      })
+      });
       if (response.ok) {
-        navigate('/suivi')
+        Alert.alert('Reservation confirmee !', 'Votre prestataire arrive dans 12 minutes', [
+          { text: 'Suivre', onPress: () => router.push('/suivi') }
+        ]);
+      } else {
+        const data = await response.json();
+        Alert.alert('Erreur serveur', JSON.stringify(data));
       }
     } catch (error) {
-      // Si le backend est en veille, on navigue quand même
-      navigate('/suivi')
+      Alert.alert('Erreur', String(error));
     }
-    setLoading(false)
-  }
+    setLoading(false);
+  };
 
   return (
-    <div style={{
-      maxWidth: '390px', margin: '0 auto',
-      minHeight: '100vh', backgroundColor: '#F4F7FC',
-      fontFamily: 'Arial, sans-serif'
-    }}>
-      <div style={{ backgroundColor: '#1B4F8A', padding: '20px', paddingTop: '50px' }}>
-        <span onClick={() => navigate('/')} style={{ color: 'white', cursor: 'pointer', fontSize: '20px' }}>← </span>
-        <span style={{ color: 'white', fontSize: '18px', fontWeight: 'bold' }}>Réserver un service</span>
-      </div>
+    <ScrollView style={styles.container}>
+      <View style={styles.header}>
+        <Text style={styles.headerText}>Reserver un service</Text>
+      </View>
 
-      <div style={{ padding: '20px' }}>
-        <p style={{ color: '#1B4F8A', fontWeight: 'bold', fontSize: '16px' }}>Choisissez votre prestation</p>
+      <View style={styles.content}>
+        <Text style={styles.sectionTitle}>Choisissez votre prestation</Text>
 
         {prestations.map((p, index) => (
-          <div key={index}
-            onClick={() => setSelectedIndex(index)}
-            style={{
-              backgroundColor: selectedIndex === index ? '#E8F0FB' : 'white',
-              border: selectedIndex === index ? '2px solid #1B4F8A' : '1px solid #eee',
-              borderRadius: '10px', padding: '15px', marginBottom: '10px',
-              display: 'flex', justifyContent: 'space-between',
-              cursor: 'pointer'
-            }}>
-            <span>{p.emoji} {p.titre}</span>
-            <span style={{ color: '#1B4F8A', fontWeight: 'bold' }}>{p.prix}</span>
-          </div>
+          <TouchableOpacity
+            key={index}
+            onPress={() => setSelectedIndex(index)}
+            style={[
+              styles.prestationRow,
+              selectedIndex === index && styles.prestationRowSelected
+            ]}
+          >
+            <Text style={styles.prestationText}>{p.emoji} {p.titre}</Text>
+            <Text style={styles.prestationPrice}>{p.prix}</Text>
+          </TouchableOpacity>
         ))}
 
-        <p style={{ color: '#1B4F8A', fontWeight: 'bold', marginTop: '20px' }}>📍 Adresse d'intervention</p>
-        <input
-          value={adresse}
-          onChange={(e) => setAdresse(e.target.value)}
+        <Text style={styles.sectionTitle}>Adresse d'intervention</Text>
+        <TextInput
+          style={styles.input}
           placeholder="Ex: Cocody, Rue des Jardins..."
-          style={{
-            width: '100%', padding: '14px', borderRadius: '10px',
-            border: '1px solid #CCC', fontSize: '14px',
-            boxSizing: 'border-box', marginBottom: '15px'
-          }}
+          placeholderTextColor="#AAAAAA"
+          value={adresse}
+          onChangeText={setAdresse}
         />
 
-        <p style={{ color: '#1B4F8A', fontWeight: 'bold' }}>📅 Date et heure</p>
-        <input
-          defaultValue="Aujourd'hui — 14h00"
-          style={{
-            width: '100%', padding: '14px', borderRadius: '10px',
-            border: '1px solid #CCC', fontSize: '14px',
-            boxSizing: 'border-box', marginBottom: '20px'
-          }}
+        <Text style={styles.sectionTitle}>Date et heure</Text>
+        <TextInput
+          style={styles.input}
+          defaultValue="Aujourd'hui - 14h00"
         />
 
-        <button
-          onClick={confirmer}
+        <TouchableOpacity
+          style={[styles.confirmButton, loading && { opacity: 0.6 }]}
+          onPress={confirmerReservation}
           disabled={loading}
-          style={{
-            width: '100%', padding: '16px',
-            backgroundColor: loading ? '#888' : '#1B4F8A',
-            color: 'white', border: 'none', borderRadius: '12px',
-            fontSize: '16px', fontWeight: 'bold', cursor: 'pointer'
-          }}>
-          {loading ? '⏳ Envoi...' : '✅ Confirmer la réservation'}
-        </button>
-      </div>
-    </div>
-  )
+        >
+          <Text style={styles.confirmButtonText}>
+            {loading ? 'Envoi...' : 'Confirmer la reservation'}
+          </Text>
+        </TouchableOpacity>
+      </View>
+    </ScrollView>
+  );
 }
 
-export default Reservation
+const styles = StyleSheet.create({
+  container: { flex: 1, backgroundColor: '#F4F7FC' },
+  header: { backgroundColor: '#1B4F8A', padding: 20, paddingTop: 50, alignItems: 'center' },
+  headerText: { color: 'white', fontSize: 18, fontWeight: 'bold' },
+  content: { padding: 20 },
+  sectionTitle: { color: '#1B4F8A', fontWeight: 'bold', fontSize: 16, marginTop: 15, marginBottom: 10 },
+  prestationRow: { backgroundColor: 'white', borderWidth: 1, borderColor: '#eee', borderRadius: 10, padding: 15, marginBottom: 10, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
+  prestationRowSelected: { backgroundColor: '#E8F0FB', borderColor: '#1B4F8A', borderWidth: 2 },
+  prestationText: { fontSize: 14, color: '#333' },
+  prestationPrice: { color: '#1B4F8A', fontWeight: 'bold' },
+  input: { backgroundColor: 'white', borderWidth: 1, borderColor: '#CCC', borderRadius: 10, padding: 14, fontSize: 14, marginBottom: 5 },
+  confirmButton: { backgroundColor: '#1B4F8A', padding: 16, borderRadius: 12, alignItems: 'center', marginTop: 25, marginBottom: 30 },
+  confirmButtonText: { color: 'white', fontSize: 16, fontWeight: 'bold' },
+});
