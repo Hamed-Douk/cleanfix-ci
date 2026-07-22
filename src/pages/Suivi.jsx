@@ -211,13 +211,13 @@ function Suivi() {
           💬 Contacter le prestataire
         </button>
 
-        <button onClick={() => navigate('/')} style={{
+                <button onClick={() => navigate('/notation')} style={{
           width: '100%', padding: '12px',
-          backgroundColor: 'transparent', color: '#888',
-          border: '1px solid #CCC', borderRadius: '12px',
-          fontSize: '14px', cursor: 'pointer'
+          backgroundColor: '#F57C00', color: 'white',
+          border: 'none', borderRadius: '12px',
+          fontSize: '14px', fontWeight: 'bold', cursor: 'pointer'
         }}>
-          ← Retour à l'accueil
+          ⭐ Noter le prestataire
         </button>
 
       </div>

@@ -6,6 +6,7 @@ import Inscription from './pages/Inscription'
 import Connexion from './pages/Connexion'
 import Admin from './pages/Admin'
 import Profil from './pages/Profil'
+import Notation from './pages/Notation'
 
 
 function PageSimple({ titre }) {
@@ -49,6 +50,9 @@ function App() {
   <RoutePriotegee><Profil /></RoutePriotegee>
 } />
       </Routes>
+      <Route path="/notation" element={
+  <RoutePriotegee><Notation /></RoutePriotegee>
+} />
     </BrowserRouter>
   )
 }
