@@ -8,7 +8,6 @@ import Admin from './pages/Admin'
 import Profil from './pages/Profil'
 import Notation from './pages/Notation'
 
-
 function PageSimple({ titre }) {
   return (
     <div style={{
@@ -34,25 +33,13 @@ function App() {
         <Route path="/connexion" element={<Connexion />} />
         <Route path="/inscription" element={<Inscription />} />
         <Route path="/admin" element={<Admin />} />
-        <Route path="/" element={
-          <RoutePriotegee><Accueil /></RoutePriotegee>
-        } />
-        <Route path="/reservation" element={
-          <RoutePriotegee><Reservation /></RoutePriotegee>
-        } />
-        <Route path="/suivi" element={
-          <RoutePriotegee><Suivi /></RoutePriotegee>
-        } />
-        <Route path="/abonnement" element={
-          <RoutePriotegee><PageSimple titre="Abonnements" /></RoutePriotegee>
-        } />
-       <Route path="/profil" element={
-  <RoutePriotegee><Profil /></RoutePriotegee>
-} />
+        <Route path="/" element={<RoutePriotegee><Accueil /></RoutePriotegee>} />
+        <Route path="/reservation" element={<RoutePriotegee><Reservation /></RoutePriotegee>} />
+        <Route path="/suivi" element={<RoutePriotegee><Suivi /></RoutePriotegee>} />
+        <Route path="/abonnement" element={<RoutePriotegee><PageSimple titre="Abonnements" /></RoutePriotegee>} />
+        <Route path="/profil" element={<RoutePriotegee><Profil /></RoutePriotegee>} />
+        <Route path="/notation" element={<RoutePriotegee><Notation /></RoutePriotegee>} />
       </Routes>
-      <Route path="/notation" element={
-  <RoutePriotegee><Notation /></RoutePriotegee>
-} />
     </BrowserRouter>
   )
 }
