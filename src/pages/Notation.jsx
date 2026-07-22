@@ -1,16 +1,14 @@
 import { useState } from 'react'
-import { useNavigate, useSearchParams } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 function Notation() {
   const navigate = useNavigate()
-  const [searchParams] = useSearchParams()
-  const reservationId = searchParams.get('reservation_id') || 1
   const [note, setNote] = useState(0)
   const [commentaire, setCommentaire] = useState('')
   const [loading, setLoading] = useState(false)
   const [envoye, setEnvoye] = useState(false)
 
-  const envoyerNotation = async () => {
+  const envoyerNote = async () => {
     if (note === 0) {
       alert('Veuillez choisir une note')
       return
@@ -20,7 +18,7 @@ function Notation() {
       await fetch('https://cleanfix-backend.onrender.com/api/notations', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ reservation_id: reservationId, note, commentaire })
+        body: JSON.stringify({ reservation_id: 1, note, commentaire })
       })
       setEnvoye(true)
     } catch (err) {
@@ -63,13 +61,12 @@ function Notation() {
       minHeight: '100vh', backgroundColor: '#F4F7FC',
       fontFamily: 'Arial, sans-serif'
     }}>
-      {/* Header */}
       <div style={{
         backgroundColor: '#1B4F8A', padding: '20px',
         paddingTop: '50px', textAlign: 'center'
       }}>
         <h1 style={{ color: 'white', margin: 0, fontSize: '20px' }}>
-          Évaluer le service
+          Evaluer le service
         </h1>
         <p style={{ color: '#B3D1F0', margin: '5px 0 0', fontSize: '13px' }}>
           Votre avis compte beaucoup
@@ -78,7 +75,6 @@ function Notation() {
 
       <div style={{ padding: '30px 20px' }}>
 
-        {/* Prestataire */}
         <div style={{
           backgroundColor: 'white', borderRadius: '12px',
           padding: '20px', textAlign: 'center',
@@ -94,46 +90,48 @@ function Notation() {
           </p>
         </div>
 
-        {/* Étoiles */}
         <p style={{ color: '#1B4F8A', fontWeight: 'bold', textAlign: 'center', marginBottom: '15px' }}>
-          Comment s'est passé votre lavage ?
+          Comment s'est passe votre lavage ?
         </p>
+
         <div style={{
           display: 'flex', justifyContent: 'center',
           gap: '10px', marginBottom: '25px'
         }}>
           {[1, 2, 3, 4, 5].map((etoile) => (
-            <span
+            <button
               key={etoile}
               onClick={() => setNote(etoile)}
               style={{
                 fontSize: '40px', cursor: 'pointer',
+                background: 'none', border: 'none',
+                padding: '5px',
                 opacity: etoile <= note ? 1 : 0.3,
-                transition: 'opacity 0.2s'
+                transform: etoile <= note ? 'scale(1.2)' : 'scale(1)',
+                transition: 'all 0.2s'
               }}>
               ⭐
-            </span>
+            </button>
           ))}
         </div>
 
         {note > 0 && (
           <p style={{ textAlign: 'center', color: '#666', marginBottom: '20px' }}>
-            {note === 1 && 'Très mauvais 😞'}
-            {note === 2 && 'Mauvais 😕'}
-            {note === 3 && 'Correct 😐'}
-            {note === 4 && 'Bien 😊'}
+            {note === 1 && 'Tres mauvais'}
+            {note === 2 && 'Mauvais'}
+            {note === 3 && 'Correct'}
+            {note === 4 && 'Bien'}
             {note === 5 && 'Excellent ! 🎉'}
           </p>
         )}
 
-        {/* Commentaire */}
         <p style={{ color: '#1B4F8A', fontWeight: 'bold', marginBottom: '8px' }}>
-          💬 Commentaire (optionnel)
+          Commentaire (optionnel)
         </p>
         <textarea
           value={commentaire}
           onChange={(e) => setCommentaire(e.target.value)}
-          placeholder="Partagez votre expérience..."
+          placeholder="Partagez votre experience..."
           rows={4}
           style={{
             width: '100%', padding: '14px',
@@ -145,7 +143,7 @@ function Notation() {
         />
 
         <button
-          onClick={envoyerNotation}
+          onClick={envoyerNote}
           disabled={loading || note === 0}
           style={{
             width: '100%', padding: '16px',
@@ -154,7 +152,7 @@ function Notation() {
             fontSize: '16px', fontWeight: 'bold',
             cursor: note === 0 ? 'not-allowed' : 'pointer'
           }}>
-          {loading ? '⏳ Envoi...' : '⭐ Envoyer ma notation'}
+          {loading ? 'Envoi...' : 'Envoyer ma notation'}
         </button>
 
       </div>
